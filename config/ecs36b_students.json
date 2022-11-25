@@ -1,0 +1,41 @@
+{
+	"1" : 
+	{
+		"score" : 198,
+		"team name" : "foo"
+	},
+	"2" : 
+	{
+		"team name" : "unassigned"
+	},
+	"3" : 
+	{
+		"team name" : "unassigned"
+	},
+	"4" : 
+	{
+		"score" : 198,
+		"team name" : "foo"
+	},
+	"5" : 
+	{
+		"team name" : "unassigned"
+	},
+	"6" : 
+	{
+		"team name" : "unassigned"
+	},
+	"7" : 
+	{
+		"score" : 198,
+		"team name" : "foo"
+	},
+	"8" : 
+	{
+		"team name" : "unassigned"
+	},
+	"9" : 
+	{
+		"team name" : "unassigned"
+	}
+}

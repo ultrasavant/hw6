@@ -18,6 +18,36 @@ main()
   HttpClient httpclient("http://127.0.0.1:8384");
   hw6Client myClient(httpclient, JSONRPC_CLIENT_V2);
   Json::Value myv;
+  Json::Value jv_list;
+  
+  jv_list[0] = "1";
+  jv_list[1] = "4";
+  jv_list[2] = "7";
+  
+  //
+  try {
+    myv = myClient.set_name("set_name", jv_list, "foo");
+  } catch (JsonRpcException &e) {
+    cerr << e.what() << endl;
+  }
+  std::cout << myv.toStyledString() << std::endl;
+
+  try {
+    // worry
+    myv = myClient.guess("guess", "Wordle", "19056_2022-11-24T20:26:16+0000",
+			 "worry");
+  } catch (JsonRpcException &e) {
+    cerr << e.what() << endl;
+  }
+  std::cout << myv.toStyledString() << std::endl;
+
+  try {
+    // worry
+    myv = myClient.submit("submit", "19056_2022-11-24T20:26:16+0000", "foo");
+  } catch (JsonRpcException &e) {
+    cerr << e.what() << endl;
+  }
+  std::cout << myv.toStyledString() << std::endl;
 
   // obtain and new
   try {
@@ -38,6 +68,8 @@ main()
       } catch (JsonRpcException &e) {
 	cerr << e.what() << endl;
       }
+
+      // exit(-1);
 
       try {
 	// mound
