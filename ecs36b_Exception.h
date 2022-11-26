@@ -5,21 +5,20 @@
 
 using namespace std;
 
-class another
-{
-private:
-  int x;
-protected:
-public:
-};
-
-class ecs36b_Exception : public another, exception
+class ecs36b_Exception : public exception
 {
 private:
 protected:
 public:
-  virtual ~ecs36b_Exception() throw () {};
-  virtual const char* what() const throw () { return "Mine"; };
+  std::string reason;
+  ecs36b_Exception(std::string r) {
+    if (r.empty())
+      reason = "unknown";
+    else
+      reason = r;
+  }
+  ~ecs36b_Exception() throw () {};
+  virtual const char* what() const throw () { return reason.c_str(); };
 };
 
 #endif /* _ECS36B_EXCEPTION_ */

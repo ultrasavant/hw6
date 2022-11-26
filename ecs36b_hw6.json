@@ -16,7 +16,7 @@
         "params": {
             "action": "obtain a game with ID",
 	    "class_id": "wordle",
-	    "game_id": "game id, 00000000 new game, 11111111 existing game"
+	    "game_id": "game id,or 00000000 for a new game"
         },
         "returns": {
             "action": "response",

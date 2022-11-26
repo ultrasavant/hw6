@@ -28,7 +28,12 @@ long wordCount = 0;
 char word[WORD_LENGTH + 1] = {0};
 char alpha[ALPHA_SIZE] = "abcdefghijklmnopqrstuvwxyz";
 
-// from wordle.c, some of them might be unused
+// from wordle.c, except the memcache stuff is removed
+// credit -- https://github.com/AyrA/Wordle-C
+// wordle C is a program developed by Ayra (a big THANKS!!)
+
+#define _WORDLE_C_
+#ifdef  _WORDLE_C_
 
 int pickWord(char * word, int index);
 bool hasWord(const char * word);
@@ -190,6 +195,8 @@ pickWord
   return index;
 }
 
+#endif  /* _WORDLE_C_ */
+
 class Myhw6Server : public hw6Server
 {
 public:
@@ -213,13 +220,15 @@ Myhw6Server::set_name
 (const std::string& action, const Json::Value& student_list,
  const std::string& team_name)
 {
+  Json::Value lv_log;
+  lv_log["arg action"] = action;
+  lv_log["arg student_list"] = student_list;
+  lv_log["arg team_name"] = team_name;
+  
   int i;
   int error_code = 0;
-  
-  int rc1 = 0;
-  int rc2 = 0;
+  int rc = 0;
   Json::Value result;
-  std::string strJson;
 
   char buf_fname1[256];
   bzero(buf_fname1, 256);
@@ -231,90 +240,130 @@ Myhw6Server::set_name
 
   Json::Value lv_teams;
   Json::Value lv_students;
-  
-  rc1 = myFile2JSON(buf_fname1, &lv_teams);
-  rc2 = myFile2JSON(buf_fname2, &lv_students);
 
-  // std::cout << "RC1 = " << rc1 << "RC2 = " << rc2 << "\n";
+  try {
+    rc = myFile2JSON(buf_fname1, &lv_teams);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception
+	  { ("myFile2JSON error " + std::string { buf_fname1 }) };
+      }
 
-  if ((rc1 == 0) && (rc2 == 0) && (team_name.empty() == false) &&
-      ((lv_teams.isNull() == true) ||
-       ((lv_teams.isNull() == false) && (lv_teams.isObject() == true))) &&
-      (lv_students.isNull() == false) && (lv_students.isObject() == true) &&
-      (student_list.isNull() == false) && (student_list.isArray() == true) &&
-      (student_list.size() > 0))
-    {
-      if ((lv_teams[team_name]).isNull() == true)
-	{
-	  // set up a new team
-	  // check if the team members have been registered with other team
-	  int lv_list_check = 0;
-	  Json::Value lv_jv;
-	  for (i = 0; i < student_list.size(); i++)
-	    {
-	      if ((student_list[i]).isString() == false)
-		{
-		  lv_list_check = 1;
-		}
-	      else
-		{
-		  lv_jv = lv_students[(student_list[i]).asString()];
-		  if ((lv_jv.isNull() == true) ||
-		      (lv_jv.isObject() == false) ||
-		      (lv_jv["team name"].isNull() == true) ||
-		      (lv_jv["team name"].isString() == false) ||
-		      (lv_jv["team name"]).asString() != "unassigned")
-		    {
-		      lv_list_check = 1;
-		    }
-		}
-	    }
-	  
-	  if (lv_list_check == 0)
-	    {
-	      for (i = 0; i < student_list.size(); i++)
-		{
-		  lv_students[(student_list[i]).asString()]["team name"]
-		    = team_name; 
-		  lv_students[(student_list[i]).asString()]["score"]
-		    = 0; 
-		}
-	      lv_teams[team_name] = student_list;
+    if((lv_teams.isNull() == false) &&
+       (lv_teams.isObject() == false))
+      {
+	error_code = -1;
+	throw ecs36b_Exception
+	  { ("teams JSON format incorrect " + std::string { buf_fname1 }) };
+      }
 
-	      // save to both files
-	      rc1 = myJSON2File(buf_fname1, &lv_teams);
-	      rc2 = myJSON2File(buf_fname2, &lv_students);
-	      if ((rc1 == 0) && (rc2 == 0))
-		{
-		  error_code = 0;
-		  result["status"] = "successful";
-		}
-	      else
-		{
-		  error_code = -4;
-		  result["status"] = "failed";
-		}
-	    }
-	  else
-	    {
-	      error_code = -1;
-	      result["status"] = "failed";
-	    }
-	}
-      else
-	{
-	  error_code = -2;
-	  result["status"] = "failed";
-	}
-    }
-  else
-    {
-      error_code = -3;
-      result["status"] = "failed";
-    }
+    rc = myFile2JSON(buf_fname2, &lv_students);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception
+	  { ("myFile2JSON error " + std::string { buf_fname2 }) };
+      }
+
+    if ((lv_students.isNull() == true) ||
+	(lv_students.isObject() == false))
+      {
+	error_code = -2;
+	throw ecs36b_Exception
+	  { ("students JSON format incorrect " + std::string { buf_fname2 }) };
+      }
+
+    if (team_name.empty())
+      {
+	error_code = -3;
+	throw ecs36b_Exception { ("team name empty") };
+      }
+
+    if ((student_list.isNull() == true) ||
+	(student_list.isArray() == false) ||
+	(student_list.size() == 0))
+      {
+	error_code = -4;
+	throw ecs36b_Exception {("student list JSON array format incorrect")};
+      }
+
+    if ((lv_teams[team_name]).isNull() == false)
+      {
+	error_code = -5;
+	throw ecs36b_Exception
+	  { ("team name already taken: " + team_name) };
+      }
+
+    // set up a new team
+    // check if the team members have been registered with other team
+    Json::Value lv_jv;
+    for (i = 0; i < student_list.size(); i++)
+      {
+	if ((student_list[i]).isString() == false)
+	  {
+	    error_code = -6;
+	    throw ecs36b_Exception
+	      { ("student name is not a string. index = " + std::to_string(i)) };
+	  }
+	else
+	  {
+	    lv_jv = lv_students[(student_list[i]).asString()];
+	    if ((lv_jv.isNull() == true) ||
+		(lv_jv.isObject() == false))
+	      {
+		error_code = -7;
+		throw ecs36b_Exception
+		  { ("student format incorrect. index = " + std::to_string(i)) };
+	      }
+
+	    if ((lv_jv["team name"].isNull() == true) ||
+		(lv_jv["team name"].isString() == false) ||
+		(lv_jv["team name"]).asString() != "unassigned")
+	      {
+		error_code = -8;
+		throw ecs36b_Exception
+		  { ("team_name not unassigned. index = " + std::to_string(i)) };
+	      }
+	  }
+      }
+
+    for (i = 0; i < student_list.size(); i++)
+      {
+	lv_students[(student_list[i]).asString()]["team name"]
+	  = team_name; 
+	lv_students[(student_list[i]).asString()]["score"]
+	  = 0; 
+      }
+    lv_teams[team_name] = student_list;
+
+    // save to both files
+    rc = myJSON2File(buf_fname1, &lv_teams);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception
+	  { ("myJSON2File error " + std::string { buf_fname1 }) };
+      }
+
+    rc = myJSON2File(buf_fname2, &lv_students);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception
+	  { ("myJSON2File error " + std::string { buf_fname2 }) };
+      }
+  } catch (ecs36b_Exception& e) {
+    std::cerr << e.what() << std::endl;
+    result["reason"] = e.what();
+    result["error_code"] = error_code;
+    result["status"] = "failed";
+  }
 
   result["word"] = "?????";
-  result["error code"] = error_code;
+  lv_log["result"] = result;
+  myPrintLog(lv_log.toStyledString(), "./config/hw6server.log");
+  
   return result;
 }
 
@@ -323,106 +372,165 @@ Myhw6Server::submit
 (const std::string& action, const std::string& game_id,
  const std::string& team_name)
 {
+  Json::Value lv_log;
+  lv_log["arg action"] = action;
+  lv_log["arg game_id"] = game_id;
+  lv_log["arg team_name"] = team_name;
+  
   int i;
   int error_code = 0;
   int rc = 0;
   Json::Value result;
-  std::string strJson;
 
-  if (game_id.empty())
-    {
-      result["status"] = "failed";
-      strJson = ( "game_id null ");
-      result["reason"] = strJson;
-      return result;
-    }
+  try {
+    if (game_id.empty())
+      {
+	error_code = -2;
+	throw ecs36b_Exception { "game_id null" };
+      }
 
-  char buf_fname[256];
-  char buf_gid[256];
+    char buf_fname[256];
+    char buf_gid[256];
 
-  bzero(buf_fname, 256);
-  snprintf(buf_fname, 255, "./games/wordle_%s.json", game_id.c_str());
-  rc = myFile2JSON(buf_fname, &result);
+    bzero(buf_fname, 256);
+    snprintf(buf_fname, 255, "./games/wordle_%s.json", game_id.c_str());
+    rc = myFile2JSON(buf_fname, &result);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception { "myFile2JSON error" };
+      }
 
-  if ((rc == 0) &&
-      (result["check_word"].isNull() == false) &&
-      (result["check_word"].isString() == true) &&
-      (result["check_word"].asString() == "#####") &&
-      (result["remaining_score"].isNull() == false) &&
-      (result["remaining_score"].isInt() == true) &&
-      (result["remaining_score"].asInt() > 0) &&
-      (result["score_distributed"].isNull() == false) &&
-      (result["score_distributed"].isBool() == true) &&
-      (result["score_distributed"].asBool() == false))
-    {
-      int rc1 = 0;
-      int rc2 = 0;
+    if((result["check_word"].isNull() == true) ||
+       (result["check_word"].isString() == false) ||
+       (result["check_word"].asString() != "#####"))
+      {
+	error_code = -3;
+	throw ecs36b_Exception { "check_word is ill-formated or incomplete" };
+      }
 
-      char buf_fname1[256];
-      bzero(buf_fname1, 256);
-      snprintf(buf_fname1, 255, "./config/ecs36b_teams.json");
+    if ((result["remaining_score"].isNull() == true) ||
+	(result["remaining_score"].isInt() == false) ||
+	(result["remaining_score"].asInt() <= 0))
+      {
+	error_code = -4;
+	throw ecs36b_Exception { "remaining score has reached zero" };
+      }
 
-      char buf_fname2[256];
-      bzero(buf_fname2, 256);
-      snprintf(buf_fname2, 255, "./config/ecs36b_students.json");
+    if ((result["score_distributed"].isNull() == true) ||
+	(result["score_distributed"].isBool() == false) ||
+	(result["score_distributed"].asBool() == true))
+      {
+	error_code = -5;
+	throw ecs36b_Exception { "score has been distributed" };
+      }      
+    
+    char buf_fname1[256];
+    bzero(buf_fname1, 256);
+    snprintf(buf_fname1, 255, "./config/ecs36b_teams.json");
 
-      Json::Value lv_teams;
-      Json::Value lv_students;
-  
-      rc1 = myFile2JSON(buf_fname1, &lv_teams);
-      rc2 = myFile2JSON(buf_fname2, &lv_students);
+    char buf_fname2[256];
+    bzero(buf_fname2, 256);
+    snprintf(buf_fname2, 255, "./config/ecs36b_students.json");
 
-      // std::cout << "RC1 = " << rc1 << "RC2 = " << rc2 << "\n";
-      if ((rc1 == 0) && (rc2 == 0) && (team_name.empty() == false) &&
-	  (lv_teams.isNull() == false) && (lv_teams.isObject() == true) &&
-	  (lv_students.isNull() == false) && (lv_students.isObject() == true))
-	{
-	  Json::Value lv_team_list = lv_teams[team_name];
-	  if ((lv_team_list.isNull() == false) &&
-	      (lv_team_list.isArray() == true))
-	    {
-	      for (i = 0; i < lv_team_list.size(); i++)
-		{
-		  int lv_score = lv_students[(lv_team_list[i]).asString()]["score"].asInt();
-		  lv_score += result["remaining_score"].asInt();
-		  lv_students[(lv_team_list[i]).asString()]["score"] = lv_score;
-		}
-	      result["score_distributed"] = true;
-	      // save to all three files
-	      rc1 = myJSON2File(buf_fname1, &lv_teams);
-	      rc2 = myJSON2File(buf_fname2, &lv_students);
-	      rc  = myJSON2File(buf_fname, &result);
-	      if ((rc1 == 0) && (rc2 == 0) && (rc == 0))
-		{
-		  error_code = 0;
-		  result["status"] = "successful";
-		}
-	      else
-		{
-		  error_code = -4;
-		  result["status"] = "failed";
-		}
-	    }
-	  else
-	    {
-	      error_code = -1;
-	      result["status"] = "failed";
-	    }
-	}
-      else
-	{
-	  error_code = -2;
-	  result["status"] = "failed";
-	}
-    }
-  else
-    {
-      error_code = -3;
-      result["status"] = "failed";
-    }
-  
+    Json::Value lv_teams;
+    Json::Value lv_students;
+
+    rc = myFile2JSON(buf_fname1, &lv_teams);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception
+	  { ("myFile2JSON error " + std::string { buf_fname1 }) };
+      }
+
+    if((lv_teams.isNull() == false) &&
+       (lv_teams.isObject() == false))
+      {
+	error_code = -1;
+	throw ecs36b_Exception
+	  { ("teams JSON format incorrect " + std::string { buf_fname1 }) };
+      }
+
+    rc = myFile2JSON(buf_fname2, &lv_students);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception
+	  { ("myFile2JSON error " + std::string { buf_fname2 }) };
+      }
+
+    if ((lv_students.isNull() == true) ||
+	(lv_students.isObject() == false))
+      {
+	error_code = -2;
+	throw ecs36b_Exception
+	  { ("students JSON format incorrect " + std::string { buf_fname2 }) };
+      }
+
+    if (team_name.empty())
+      {
+	error_code = -3;
+	throw ecs36b_Exception { ("team name empty") };
+      }
+
+    Json::Value lv_team_list = lv_teams[team_name];
+    if ((lv_team_list.isNull() == false) &&
+	(lv_team_list.isArray() == true))
+      {
+	Json::Value lv_score_list;
+	for (i = 0; i < lv_team_list.size(); i++)
+	  {
+	    std::string lv_student_id = (lv_team_list[i]).asString();
+	    int lv_score = lv_students[lv_student_id]["score"].asInt();
+	    lv_score += result["remaining_score"].asInt();
+	    lv_students[lv_student_id]["score"] = lv_score;
+	    // send the scores back
+	    lv_score_list[i] = lv_score;
+	  }
+	result["score_distributed"] = true;
+
+	// save to all three files
+	rc = myJSON2File(buf_fname1, &lv_teams);
+	if (rc != 0)
+	  {
+	    error_code = rc;
+	    throw ecs36b_Exception
+	      { ("myJSON2File error " + std::string { buf_fname1 }) };
+	  }
+
+	rc = myJSON2File(buf_fname2, &lv_students);
+	if (rc != 0)
+	  {
+	    error_code = rc;
+	    throw ecs36b_Exception
+	      { ("myJSON2File error " + std::string { buf_fname2 }) };
+	  }
+
+	rc  = myJSON2File(buf_fname, &result);
+	if (rc != 0)
+	  {
+	    error_code = rc;
+	    throw ecs36b_Exception
+	      { ("myJSON2File error " + std::string { buf_fname }) };
+	  }
+
+	error_code = 0;
+	result["scores"] = lv_score_list;
+	result["status"] = "successful";
+      }
+  } catch (ecs36b_Exception& e) {
+    std::cerr << e.what() << std::endl;
+    result["reason"] = e.what();
+    result["error_code"] = error_code;
+    result["status"] = "failed";
+  }
+
   result["word"] = "?????";
-  result["error_code"] = error_code;
+
+  lv_log["result"] = result;
+  myPrintLog(lv_log.toStyledString(), "./config/hw6server.log");
+
   return result;
 }
 
@@ -431,22 +539,26 @@ Myhw6Server::obtain
 (const std::string& action, const std::string& class_id,
  const std::string& game_id)
 {
-  int rc = 0;
-  Json::Value result;
-  std::string strJson;
+  Json::Value lv_log;
+  lv_log["arg action"] = action;
+  lv_log["arg class_id"] = class_id;
+  lv_log["arg game_id"] = game_id;
 
-  if (class_id != "Wordle")
-    {
-      result["status"] = "failed";
-      strJson = ( "class " + class_id + " unknown");
-      result["reason"] = strJson;
-    }
+  int rc = 0;
+  int error_code = 0;
+  Json::Value result;
+
+  try {
+    if (class_id != "Wordle")
+      {
+	error_code = -1;
+	throw ecs36b_Exception { ("class " + class_id + " unknown") };
+      }
 
   if (game_id.empty())
     {
-      result["status"] = "failed";
-      strJson = ( "game_id null ");
-      result["reason"] = strJson;
+      error_code = -2;
+      throw ecs36b_Exception { "game_id null" };
     }
 
   char buf_fname[256];
@@ -472,8 +584,8 @@ Myhw6Server::obtain
       target = fopen(buf_fname, "a");
       if (target == NULL)
 	{
-	  std::cout << "new error\n";
-	  exit(-1);
+	  error_code = -4;
+	  throw ecs36b_Exception { "cannot open the target Wordle game!" };
 	}
       fclose(target);
 
@@ -484,11 +596,13 @@ Myhw6Server::obtain
       // try to find the solution word
       my_rand = rand();
       my_rand = my_rand % 2314;
-
+	  
       int pi = pickWord(word, my_rand);
       if (pi != my_rand)
-	std::cout << "very strange\n";
-
+	{
+	  error_code = -5;
+	  throw ecs36b_Exception { "pickWord mismatching error" };
+	}
       result["word"] = word;
       result["check_word"] = "_____";
       
@@ -499,7 +613,8 @@ Myhw6Server::obtain
 	}
       else
 	{
-	  result["status"] = "failed";
+	  error_code = rc;
+	  throw ecs36b_Exception { "myJSON2File error" };
 	}
     }
   else
@@ -514,13 +629,23 @@ Myhw6Server::obtain
 	}
       else
 	{
-	  result["status"] = "failed";
+	  error_code = rc;
+	  throw ecs36b_Exception { "myJSON2File error" };
 	}
     }
-
+  } catch (ecs36b_Exception& e) {
+    std::cerr << e.what() << std::endl;
+    result["reason"] = e.what();
+    result["error_code"] = error_code;
+    result["status"] = "failed";
+  }
+  
   // remember to mask the real solution before returning
   result["word"] = "?????";
-  std::cout << result.toStyledString() << std::endl;
+
+  lv_log["result"] = result;
+  myPrintLog(lv_log.toStyledString(), "./config/hw6server.log");
+
   return result;
 }
 
@@ -529,121 +654,156 @@ Myhw6Server::guess
 (const std::string& action, const std::string& class_id,
  const std::string& game_id, const std::string& my_guess)
 {
-  int rc;
-  Json::Value result;
-  std::string strJson;
-
-  std::cout << "guess is " << my_guess << std::endl;
+  Json::Value lv_log;
+  lv_log["arg action"] = action;
+  lv_log["arg class_id"] = class_id;
+  lv_log["arg game_id"] = game_id;
+  lv_log["arg my_guess"] = my_guess;
   
-  if (class_id != "Wordle")
-    {
-      result["status"] = "failed";
-      strJson = ( "class " + class_id + " unknown");
-      result["reason"] = strJson;
-    }
+  int rc;
+  int error_code = 0;
+  Json::Value result;
 
-  if (game_id.empty())
-    {
-      result["status"] = "failed";
-      strJson = ( "game_id null ");
-      result["reason"] = strJson;
-    }
+  try {
+    if (class_id != "Wordle")
+      {
+	error_code = -1;
+	throw ecs36b_Exception { ("class " + class_id + " unknown") };
+      }
 
-  char buf_fname[256];
-  char buf_gid[256];
-  FILE *target;
+    if (game_id.empty())
+      {
+	error_code = -2;
+	throw ecs36b_Exception { "game_id null" };
+      }
 
-  bzero(buf_fname, 256);
-  snprintf(buf_fname, 255, "./games/wordle_%s.json", game_id.c_str());
-  rc = myFile2JSON(buf_fname, &result);
+    char buf_fname[256];
+    char buf_gid[256];
+    FILE *target;
 
-  if ((rc == 0) &&
-      (result["check_word"].isNull() == false) &&
-      (result["check_word"].isString() == true) &&
-      (result["check_word"].asString() != "#####") &&
-      (result["word"].isNull() == false) &&
-      (result["word"].isString() == true) &&
-      ((result["word"].asString()).size() == 5))
-    {
-      bzero(word, WORD_LENGTH + 1);
-      snprintf(word, WORD_LENGTH + 1, "%s", (result["word"].asString()).c_str());
-      toLower(word);
+    bzero(buf_fname, 256);
+    snprintf(buf_fname, 255, "./games/wordle_%s.json", game_id.c_str());
+    rc = myFile2JSON(buf_fname, &result);
+    if (rc != 0)
+      {
+	error_code = rc;
+	throw ecs36b_Exception { "myFile2JSON error" };
+      }
+
+    if ((result["check_word"].isNull() == true) ||
+	(result["check_word"].isString() == false))
+      {
+	error_code = -3;
+	throw ecs36b_Exception { "check_word invalid in the file" };
+      }
+    
+    if (result["check_word"].asString() == "#####")
+      {
+	error_code = -4;
+	throw ecs36b_Exception { "Wordle solved already" };
+      }
+
+    if((result["word"].isNull() == true) ||
+       (result["word"].isString() == false) ||
+       ((result["word"].asString()).size() != 5))
+      {
+	error_code = -5;
+	throw ecs36b_Exception { "solution word invalid in the file" };
+      }
+
+    bzero(word, WORD_LENGTH + 1);
+    snprintf(word, WORD_LENGTH + 1, "%s", (result["word"].asString()).c_str());
+    toLower(word);
       
-      char lv_guess[WORD_LENGTH + 1];
-      bzero(lv_guess, WORD_LENGTH + 1);
-      snprintf(lv_guess, WORD_LENGTH + 1, "%s", my_guess.c_str());
-      toLower(lv_guess);
+    char lv_guess[WORD_LENGTH + 1];
+    bzero(lv_guess, WORD_LENGTH + 1);
+    snprintf(lv_guess, WORD_LENGTH + 1, "%s", my_guess.c_str());
+    toLower(lv_guess);
       
-      if (strcmp(lv_guess, word) == 0)
-	{
-	  // guessed right
-	  result["check_word"] = "#####";
-	  int index = (result["guesses"]["data"]).size();
-	  Json::Value lv_jv;
-	  lv_jv["guess"] = lv_guess;
-	  lv_jv["result"] = "#####";
-	  JvTime * my_now_ptr = getNowJvTime();
-	  std::string *my_now_str = my_now_ptr->getTimeString();
-	  lv_jv["time"] = (*my_now_str);
-	  result["guesses"]["data"][index] = lv_jv;
-	  rc = myJSON2File(buf_fname, &result);
-	  result["status"] = "successful";
-	}
-      else
-	{	  
-	  if (isWord(lv_guess) && hasWord(lv_guess))
-	    {
-	      if (checkWord(lv_guess))
-		{
-		  std::cout << "checkWord done \n";
+    if (strcmp(lv_guess, word) == 0)
+      {
+	// guessed right
+	result["check_word"] = "#####";
+	int index = (result["guesses"]["data"]).size();
+	Json::Value lv_jv;
+	lv_jv["guess"] = lv_guess;
+	lv_jv["result"] = "#####";
+	JvTime * my_now_ptr = getNowJvTime();
+	std::string *my_now_str = my_now_ptr->getTimeString();
+	lv_jv["time"] = (*my_now_str);
+	result["guesses"]["data"][index] = lv_jv;
+
+	rc = myJSON2File(buf_fname, &result);
+	if (rc == 0)
+	  {
+	    result["status"] = "successful";
+	  }
+	else
+	  {
+	    error_code = rc;
+	    throw ecs36b_Exception { "myJSON2File error" };
+	  }
+      }
+    else
+      {	  
+	if (isWord(lv_guess) && hasWord(lv_guess))
+	  {
+	    if (checkWord(lv_guess))
+	      {
+		std::cout << "checkWord done \n";
 		  
-		  result["check_word"] = check_result;
-		  int index = (result["guesses"]["data"]).size();
-		  Json::Value lv_jv;
-		  lv_jv["guess"] = lv_guess;
-		  lv_jv["result"] = check_result;
-		  JvTime * my_now_ptr = getNowJvTime();
-		  std::string *my_now_str = my_now_ptr->getTimeString();
-		  lv_jv["time"] = (*my_now_str);
-		  result["guesses"]["data"][index] = lv_jv;
-		  if((result["remaining_score"].isNull() == false) &&
-		     (result["remaining_score"].isInt() == true))
-		    {
-		      int lv_remaining = result["remaining_score"].asInt();
-		      result["remaining_score"] = lv_remaining -1;
-		    }
-		  rc = myJSON2File(buf_fname, &result);
-		  if (rc == 0)
-		    {
-		      result["status"] = "successful";
-		    }
-		  else
-		    {
-		      result["status"] = "failed";
-		    }
-		}
-	      else
-		{
-		  result["check_word"] = "_____";
-		  result["status"] = "failed";
-		}
-	    }
-	  else
-	    {
-	      result["check_word"] = "_____";
-	      result["status"] = "failed";
-	      puts("Word not in list");
-	    }
-	}
-    }
-  else
-    {
-      // failed
-      result["check_word"] = "_____";
-      result["status"] = "failed";
-    }
+		result["check_word"] = check_result;
+		int index = (result["guesses"]["data"]).size();
+		Json::Value lv_jv;
+		lv_jv["guess"] = lv_guess;
+		lv_jv["result"] = check_result;
+		JvTime * my_now_ptr = getNowJvTime();
+		std::string *my_now_str = my_now_ptr->getTimeString();
+		lv_jv["time"] = (*my_now_str);
+		result["guesses"]["data"][index] = lv_jv;
+		if((result["remaining_score"].isNull() == false) &&
+		   (result["remaining_score"].isInt() == true))
+		  {
+		    int lv_remaining = result["remaining_score"].asInt();
+		    result["remaining_score"] = lv_remaining -1;
+		  }
+		rc = myJSON2File(buf_fname, &result);
+		if (rc == 0)
+		  {
+		    result["status"] = "successful";
+		  }
+		else
+		  {
+		    error_code = rc;
+		    throw ecs36b_Exception { "myJSON2File error" };
+		  }
+	      }
+	    else
+	      {
+		result["check_word"] = "_____";
+		error_code = -7;
+		throw ecs36b_Exception { "checkWord false strlen mismatched" };
+	      }
+	  }
+	else
+	  {
+	    result["check_word"] = "_____";
+	    error_code = -8;
+	    throw ecs36b_Exception { "Guess word not in the list" };
+	  }
+      }
+  } catch(ecs36b_Exception& e) {
+    std::cerr << e.what() << std::endl;
+    result["reason"] = e.what();
+    result["error_code"] = error_code;
+    result["status"] = "failed";
+  }
   
   result["word"] = "?????";
+
+  lv_log["result"] = result;
+  myPrintLog(lv_log.toStyledString(), "./config/hw6server.log");
+
   return result;
 }
 
