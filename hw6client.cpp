@@ -15,7 +15,8 @@ int
 main()
 {
   // distributed wordle demo for 11/23/2022
-  HttpClient httpclient("http://127.0.0.1:8384");
+  // HttpClient httpclient("http://127.0.0.1:8384");
+  HttpClient httpclient("https://5f43-2601-200-c001-9ff0-d5cd-ca2a-e2c4-2fcc.ngrok.io");
   hw6Client myClient(httpclient, JSONRPC_CLIENT_V2);
   Json::Value myv;
   Json::Value jv_list;
