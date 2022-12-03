@@ -41,7 +41,7 @@ main()
 	}
 
   // Loop through games
-  int gamesToLoopThrough = 2;
+  int gamesToLoopThrough = 10;
   for (int i = 0; i < gamesToLoopThrough; i += 1) {
 
     // Resets for each game
