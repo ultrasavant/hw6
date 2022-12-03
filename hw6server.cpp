@@ -1,9 +1,9 @@
 
 // for Json::value
-#include <json/json.h>
-#include <json/reader.h>
-#include <json/writer.h>
-#include <json/value.h>
+#include </usr/include/jsoncpp/json/json.h>
+#include </usr/include/jsoncpp/json/reader.h>
+#include </usr/include/jsoncpp/json/writer.h>
+#include </usr/include/jsoncpp/json/value.h>
 #include <string>
 
 // for JsonRPCCPP
@@ -569,7 +569,8 @@ Myhw6Server::obtain
     {
       // new game
       unsigned int my_rand = rand();
-      my_rand = my_rand % 100000;
+      // changed
+      my_rand = my_rand % 100000000;
 
       JvTime * my_now_ptr = getNowJvTime();
       std::string *my_now_str = my_now_ptr->getTimeString();

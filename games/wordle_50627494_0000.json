@@ -1,0 +1,31 @@
+{
+   "check_word" : "_____",
+   "game_id" : "50627494_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_#__o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "____#",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "toddy"
+}

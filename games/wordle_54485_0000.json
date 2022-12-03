@@ -1,0 +1,26 @@
+{
+   "check_word" : "__o_#",
+   "game_id" : "54485_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "__#__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "__o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "__o_#",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 97,
+   "score_distributed" : false,
+   "word" : "curly"
+}

@@ -1,0 +1,31 @@
+{
+   "check_word" : "_o___",
+   "game_id" : "88904182_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "ooo__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "__o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_o___",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "argue"
+}

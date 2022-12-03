@@ -1,0 +1,31 @@
+{
+   "check_word" : "_____",
+   "game_id" : "43005613_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_#__o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "dodge"
+}

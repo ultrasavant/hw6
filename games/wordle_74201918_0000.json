@@ -1,0 +1,66 @@
+{
+   "check_word" : "_____",
+   "game_id" : "74201918_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_#_o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "__o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "agape",
+            "result" : "____o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "djins",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "above",
+            "result" : "__ooo",
+            "time" : "0000"
+         },
+         {
+            "guess" : "ablow",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abuzz",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abbey",
+            "result" : "___#_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "aquas",
+            "result" : "_____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 89,
+   "score_distributed" : false,
+   "word" : "coven"
+}

@@ -1,0 +1,26 @@
+{
+   "check_word" : "#####",
+   "game_id" : "92793_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_#_##",
+            "time" : "0000"
+         },
+         {
+            "guess" : "kinky",
+            "result" : "#####",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 98,
+   "score_distributed" : false,
+   "word" : "kinky"
+}

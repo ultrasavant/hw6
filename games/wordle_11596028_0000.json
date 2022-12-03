@@ -1,0 +1,21 @@
+{
+   "check_word" : "#____",
+   "game_id" : "11596028_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_oo__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "#____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 98,
+   "score_distributed" : false,
+   "word" : "snarl"
+}

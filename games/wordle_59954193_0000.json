@@ -1,0 +1,31 @@
+{
+   "check_word" : "_#___",
+   "game_id" : "59954193_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o#___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "___oo",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "__o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_#___",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "dance"
+}

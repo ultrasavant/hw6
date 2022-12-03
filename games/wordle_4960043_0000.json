@@ -1,0 +1,31 @@
+{
+   "check_word" : "#____",
+   "game_id" : "4960043_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o_oo_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "#o___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "#____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "metro"
+}

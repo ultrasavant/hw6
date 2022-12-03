@@ -1,0 +1,26 @@
+{
+   "check_word" : "_____",
+   "game_id" : "68645_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o__oo",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_#___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 97,
+   "score_distributed" : false,
+   "word" : "hotel"
+}

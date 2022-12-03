@@ -1,0 +1,76 @@
+{
+   "check_word" : "#####",
+   "game_id" : "6906294_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "___oo",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_ooo_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "agape",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "djins",
+            "result" : "__#__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "above",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "ablow",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abuzz",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abbey",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "aquas",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "chick",
+            "result" : "_####",
+            "time" : "0000"
+         },
+         {
+            "guess" : "thick",
+            "result" : "#####",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 88,
+   "score_distributed" : false,
+   "word" : "thick"
+}

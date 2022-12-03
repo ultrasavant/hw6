@@ -3,7 +3,7 @@
 # https://macappstore.org/libjson-rpc-cpp/
 # https://github.com/cinemast/libjson-rpc-cpp
 
-CC = g++ -std=c++17
+CC = g++ -std=c++14
 CFLAGS = -g
 
 LDFLAGS = 	-L/opt/homebrew/lib/ -ljsoncpp			\

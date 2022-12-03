@@ -1,0 +1,16 @@
+{
+   "check_word" : "o____",
+   "game_id" : "15562746_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o____",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 99,
+   "score_distributed" : false,
+   "word" : "nudge"
+}

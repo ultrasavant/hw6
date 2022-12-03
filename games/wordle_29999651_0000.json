@@ -1,0 +1,26 @@
+{
+   "check_word" : "_#___",
+   "game_id" : "29999651_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o_o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_#___",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 97,
+   "score_distributed" : false,
+   "word" : "riper"
+}

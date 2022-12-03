@@ -1,0 +1,71 @@
+{
+   "check_word" : "#####",
+   "game_id" : "96701334_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o_o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_o___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "agape",
+            "result" : "___o#",
+            "time" : "0000"
+         },
+         {
+            "guess" : "djins",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "above",
+            "result" : "__###",
+            "time" : "0000"
+         },
+         {
+            "guess" : "ablow",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abuzz",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abbey",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "aquas",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "prove",
+            "result" : "#####",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 89,
+   "score_distributed" : false,
+   "word" : "prove"
+}

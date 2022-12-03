@@ -1,0 +1,31 @@
+{
+   "check_word" : "##___",
+   "game_id" : "33109331_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_#o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "#o___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "__#__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "##___",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "macro"
+}

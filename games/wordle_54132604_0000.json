@@ -1,0 +1,71 @@
+{
+   "check_word" : "#####",
+   "game_id" : "54132604_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "oo___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "agape",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "djins",
+            "result" : "__#_o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "above",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "ablow",
+            "result" : "____o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abuzz",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abbey",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "aquas",
+            "result" : "____o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "twist",
+            "result" : "#####",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 89,
+   "score_distributed" : false,
+   "word" : "twist"
+}

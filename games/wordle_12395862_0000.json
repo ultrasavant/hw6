@@ -1,0 +1,31 @@
+{
+   "check_word" : "##___",
+   "game_id" : "12395862_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_#___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "#__o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "____#",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "##___",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "mangy"
+}

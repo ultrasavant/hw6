@@ -1,0 +1,71 @@
+{
+   "check_word" : "####_",
+   "game_id" : "32587032_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_o_oo",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "#____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_o___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "agape",
+            "result" : "__#__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "djins",
+            "result" : "____o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "above",
+            "result" : "o____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "ablow",
+            "result" : "o_o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abuzz",
+            "result" : "o____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "abbey",
+            "result" : "o____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "aquas",
+            "result" : "o___o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "shall",
+            "result" : "####_",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 88,
+   "score_distributed" : false,
+   "word" : "shalt"
+}

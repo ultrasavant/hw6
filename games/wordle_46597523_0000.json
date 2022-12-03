@@ -1,0 +1,31 @@
+{
+   "check_word" : "___o_",
+   "game_id" : "46597523_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_____",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "____o",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_#__#",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "___o_",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "biddy"
+}

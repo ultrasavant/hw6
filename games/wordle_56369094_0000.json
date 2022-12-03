@@ -1,0 +1,31 @@
+{
+   "check_word" : "___o_",
+   "game_id" : "56369094_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "o_o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "___o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "_o___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "___o_",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "reign"
+}

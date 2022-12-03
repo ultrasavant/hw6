@@ -1,0 +1,31 @@
+{
+   "check_word" : "_#___",
+   "game_id" : "39475555_0000",
+   "guesses" : {
+      "data" : [
+         {
+            "guess" : "earth",
+            "result" : "_#___",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mound",
+            "result" : "_o_o_",
+            "time" : "0000"
+         },
+         {
+            "guess" : "sicky",
+            "result" : "__o__",
+            "time" : "0000"
+         },
+         {
+            "guess" : "mafia",
+            "result" : "_#___",
+            "time" : "0000"
+         }
+      ]
+   },
+   "remaining_score" : 96,
+   "score_distributed" : false,
+   "word" : "canon"
+}
